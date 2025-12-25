@@ -6,6 +6,13 @@ from typing import Any
 from pydantic import BaseModel, Field
 
 
+class EpisodeState(StrEnum):
+    active = "active"
+    fork_pending = "fork_pending"
+    closed = "closed"
+    expired = "expired"
+
+
 class EpisodeEdgeType(StrEnum):
     related_to = "related_to"
     forked_from = "forked_from"
@@ -24,6 +31,7 @@ class EpisodeEdge(BaseModel):
 class Episode(BaseModel):
     id: str
     braid_id: str
+    state: EpisodeState = EpisodeState.active
     labels: dict[str, Any] = Field(default_factory=lambda: {"topics": [], "intents": [], "modalities": []})
     primary_knot_span: dict[str, str] = Field(default_factory=dict)
     knot_refs: list[str] = Field(default_factory=list)
